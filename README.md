@@ -105,3 +105,5 @@ python -m pip install -r requirements.txt
 cd ..
 python -m pytest tests/test_claims.py tests/test_fraud_detection.py tests/test_blockchain.py tests/test_provider_ml.py
 ```
+#   i n s u r a n c e f r a u d  
+ 
