@@ -1,0 +1,3 @@
+function Score({title,score,detail}){if(!score)return <div><h3>{title}</h3><p>Score unavailable.</p></div>;return <div><h3>{title}</h3><p><b>{score.risk_score?.toFixed?.(1) ?? score.risk_score}/100</b> · {score.prediction}</p><small>Probability: {Number(score.probability).toFixed(4)}</small>{detail&&<p className="notice">{detail}</p>}</div>}
+
+export default function FraudScore({fraud}){const heuristic=fraud?.claim_heuristic,provider=fraud?.provider_dnn;return <div className="scores"><Score title="Claim-level heuristic" score={heuristic} detail="Based on this claim’s amount, prior claims, prior amount, and stay duration."/><Score title="Provider-level DNN" score={provider} detail={provider?.notice || 'Uses provider history and engineered provider features.'}/></div>}

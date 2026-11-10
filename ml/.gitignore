@@ -1,0 +1,24 @@
+# Raw beneficiary, claim, and patient-level data
+data/raw/
+
+# Python-generated files and environments
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Temporary checkpoints and experimental/evaluation output
+models/checkpoint*
+models/*checkpoint*
+models/experimental/
+models/experiments/
+logs/
+outputs/
+evaluation/
+
+# Required deployment artifacts remain trackable:
+# models/medical_fraud_dnn.keras
+# models/medical_fraud_dnn_preprocessor.joblib
+# data/provider_features.csv

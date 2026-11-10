@@ -1,0 +1,1 @@
+-- Demo administrator is seeded safely by backend startup: admin@example.com / Admin123!

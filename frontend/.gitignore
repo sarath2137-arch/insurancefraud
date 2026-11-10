@@ -1,0 +1,10 @@
+# Frontend dependencies, build output, and local Vite state
+node_modules/
+dist/
+.vite/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+!.env.sample

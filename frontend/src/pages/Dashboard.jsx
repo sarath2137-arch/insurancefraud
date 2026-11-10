@@ -1,0 +1,13 @@
+import {useEffect,useState} from 'react';
+import {Link} from 'react-router-dom';
+import {ResponsiveContainer,BarChart,Bar,XAxis,YAxis,Tooltip,CartesianGrid} from 'recharts';
+import {getClaims,getSummary} from '../services/claimService';
+import DashboardCard from '../components/DashboardCard';
+import ClaimTable from '../components/ClaimTable';
+
+export default function Dashboard(){
+ const [summary,setSummary]=useState(null),[claims,setClaims]=useState([]),[error,setError]=useState(''),[loading,setLoading]=useState(true);
+ useEffect(()=>{Promise.all([getSummary(),getClaims()]).then(([s,c])=>{setSummary(s.data);setClaims(c.data)}).catch(e=>setError(e.response?.data?.detail||'Could not load dashboard data. Check that the API is running and sign in again.')).finally(()=>setLoading(false))},[]);
+ const chart=summary?[{name:'Pending',value:summary.pending_claims||0},{name:'Approved',value:summary.approved_claims||0},{name:'Rejected',value:summary.rejected_claims||0},{name:'Suspicious',value:summary.suspicious_claims||0}]:[];
+ return <><div className="title"><div><span className="eyebrow">COMMAND CENTER</span><h1>Insurance operations</h1><p>Live claim intelligence and review queue.</p></div><Link className="button-link" to="/submit">+ Submit claim</Link></div>{loading?<div className="panel loading">Loading live dashboard data…</div>:error?<div className="error" role="alert">{error}</div>:<><section className="cards"><DashboardCard label="Total claims" value={summary.total_claims}/><DashboardCard label="Suspicious claim signals" value={summary.suspicious_claims} accent="red"/><DashboardCard label="Average claim heuristic" value={`${summary.average_risk}/100`} accent="purple"/><DashboardCard label="Claim value" value={`₹${Number(summary.total_claim_amount||0).toLocaleString()}`} accent="green"/></section><div className="dashboard-grid"><section className="panel"><div className="panelhead"><h2>Claim status overview</h2><span>Counts from claim records</span></div><div className="chart"><ResponsiveContainer width="100%" height="100%"><BarChart data={chart}><CartesianGrid strokeDasharray="3 3" vertical={false}/><XAxis dataKey="name"/><YAxis allowDecimals={false}/><Tooltip/><Bar dataKey="value" fill="#087780" radius={[5,5,0,0]}/></BarChart></ResponsiveContainer></div></section><section className="panel"><h2>Risk review note</h2><p className="notice">Claim level heuristic and provider level DNN scores are separate decision support signals. Neither score proves fraud.</p><Link to="/analytics">View analytics →</Link></section></div><section className="panel"><div className="panelhead"><h2>Recent claims</h2><Link to="/claims">View all claims →</Link></div><ClaimTable claims={claims.slice(0,6)}/></section></>}</>
+}

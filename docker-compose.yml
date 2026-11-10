@@ -1,0 +1,59 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment: {POSTGRES_DB: insurance, POSTGRES_USER: insurance, POSTGRES_PASSWORD: insurance}
+    ports: ['5432:5432']
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U insurance -d insurance"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  hardhat:
+    build: ./blockchain
+    command: ["npx", "hardhat", "node", "--hostname", "0.0.0.0"]
+    ports: ['8545:8545']
+    volumes:
+      - ./blockchain/artifacts:/app/artifacts
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8545',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',method:'eth_chainId',params:[],id:1})}).then(r=>r.json()).then(x=>process.exit(x.result?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg://insurance:insurance@postgres:5432/insurance
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET to at least 32 random bytes in the root .env file}
+      SEED_DEVELOPMENT_ADMIN: ${SEED_DEVELOPMENT_ADMIN:-false}
+      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      PORT: 8000
+      BLOCKCHAIN_RPC_URL: ${BLOCKCHAIN_RPC_URL:-http://hardhat:8545}
+      BLOCKCHAIN_CONTRACT_ADDRESS: ${BLOCKCHAIN_CONTRACT_ADDRESS:-0x5FbDB2315678afecb367f032d93F642f64180aa3}
+      BLOCKCHAIN_CONTRACT_ABI: ${BLOCKCHAIN_CONTRACT_ABI:-../blockchain/artifacts/contracts/InsuranceClaim.sol/InsuranceClaim.json}
+      BLOCKCHAIN_PRIVATE_KEY: ${BLOCKCHAIN_PRIVATE_KEY:?Set BLOCKCHAIN_PRIVATE_KEY in the ignored local .env file}
+      BLOCKCHAIN_TIMEOUT_SECONDS: ${BLOCKCHAIN_TIMEOUT_SECONDS:-30}
+    ports: ['8000:8000']
+    volumes:
+      - ./ml/models/medical_fraud_dnn.keras:/app/ml/models/medical_fraud_dnn.keras:ro
+      - ./ml/models/medical_fraud_dnn_preprocessor.joblib:/app/ml/models/medical_fraud_dnn_preprocessor.joblib:ro
+      - ./ml/preprocessing:/app/ml/preprocessing:ro
+      - ./ml/data/raw:/app/ml/data/raw:ro
+      - ./blockchain/artifacts/contracts/InsuranceClaim.sol:/app/blockchain/artifacts/contracts/InsuranceClaim.sol:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      hardhat:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+volumes: {postgres_data: {}}

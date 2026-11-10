@@ -1,0 +1,101 @@
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+*.wallet
+*.mnemonic
+*credentials*.json
+*secret*.json
+
+# Python
+.venv/
+.venv-dnn/
+venv/
+env/
+**/.venv/
+**/venv/
+**/env/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+**/.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+htmlcov/
+.coverage
+coverage.xml
+
+# JavaScript and generated builds
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+build/
+**/build/
+coverage/
+**/coverage/
+.vite/
+**/.vite/
+
+# Local databases and backups
+*.db
+*.sqlite
+*.sqlite3
+*.db-*
+*.sqlite-*
+*.bak
+*.backup
+*.dump
+*.sql.gz
+
+# Logs, temporary files, and OS/editor state
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+Thumbs.db
+Desktop.ini
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# Docker local state
+.docker/
+docker-compose.override.yml
+
+# Hardhat generated state
+blockchain/cache/
+blockchain/artifacts/
+blockchain/coverage/
+blockchain/.hardhat-appdata/
+blockchain/.hardhat-localappdata/
+
+# Raw patient-level inputs; retain curated provider feature table
+ml/data/raw/
+
+# Temporary model and experiment outputs; required deployment artifacts stay trackable
+ml/models/checkpoint*
+ml/models/*checkpoint*
+ml/models/experimental/
+ml/models/experiments/
+ml/logs/
+ml/outputs/
+ml/evaluation/

@@ -1,0 +1,63 @@
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+!.env.sample
+**/.env
+**/.env.*
+
+# Local Python environments and caches
+.venv/
+.venv-dnn/
+**/.venv/
+**/.venv-dnn/
+venv/
+env/
+**/venv/
+**/env/
+**/__pycache__/
+**/*.py[cod]
+.pytest_cache/
+**/.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node dependencies and generated frontend/blockchain output
+**/node_modules/
+frontend/dist/
+frontend/.vite/
+blockchain/cache/
+blockchain/artifacts/
+blockchain/coverage/
+blockchain/.hardhat-appdata/
+blockchain/.hardhat-localappdata/
+
+# Local databases and backups
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+**/*.bak
+**/*.backup
+**/*.dump
+
+# Raw patient-level data only. Keep ml/data/provider_features.csv,
+# the two required model artifacts, and backend/migrations in the context.
+ml/data/raw/
+
+# Logs and temporary files
+**/*.log
+**/logs/
+**/*.tmp
+**/*.temp
+
+# Private keys and wallet material
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/*.keystore
+**/*.jks
+**/*.wallet
+**/*.mnemonic
+**/*credentials*.json
+**/*secret*.json

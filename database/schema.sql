@@ -1,0 +1,1 @@
+-- SQLAlchemy creates the schema. PostgreSQL deployments may use this file as a migration starting point.

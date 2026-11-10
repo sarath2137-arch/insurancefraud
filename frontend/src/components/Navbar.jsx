@@ -1,0 +1,1 @@
+import {user,logout} from '../utils/auth';export default function Navbar(){return <header><div><b>MedSure</b><span> AI fraud intelligence</span></div><div className="account">{user()?.full_name}<button onClick={logout}>Sign out</button></div></header>}

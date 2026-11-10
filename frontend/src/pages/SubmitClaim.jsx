@@ -1,0 +1,1 @@
+import ClaimForm from '../components/ClaimForm';export default function SubmitClaim(){return <><div className="title"><span className="eyebrow">NEW SUBMISSION</span><h1>Submit insurance claim</h1></div><ClaimForm/></>}

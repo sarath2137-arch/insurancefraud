@@ -1,0 +1,23 @@
+# Backend-local Python environments and generated test/runtime data
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local environment and database files (root rules also cover these)
+.env
+.env.*
+!.env.example
+!.env.sample
+*.db
+*.sqlite
+*.sqlite3
+*.bak
+*.backup
+*.dump

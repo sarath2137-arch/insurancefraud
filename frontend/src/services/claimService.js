@@ -1,0 +1,1 @@
+import api from './api';export const getClaims=()=>api.get('/api/claims');export const createClaim=x=>api.post('/api/claims',x);export const getSummary=()=>api.get('/api/reports/summary');export const updateStatus=(id,status)=>api.put(`/api/claims/${id}/status`,{status});

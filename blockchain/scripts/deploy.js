@@ -1,0 +1,1 @@
+async function main(){const C=await ethers.getContractFactory('InsuranceClaim');const c=await C.deploy();await c.waitForDeployment();console.log('InsuranceClaim:',await c.getAddress())}main().catch(e=>{console.error(e);process.exitCode=1});

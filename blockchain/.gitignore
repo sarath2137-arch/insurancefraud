@@ -1,0 +1,23 @@
+# Hardhat generated output and dependencies
+node_modules/
+cache/
+artifacts/
+coverage/
+.hardhat-appdata/
+.hardhat-localappdata/
+
+# Local environment and wallet secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+*.wallet
+*.mnemonic
+*credentials*.json
+*secret*.json
